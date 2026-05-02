@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signup</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+    height:100vh;
+    background: radial-gradient(circle at bottom,#140022,#000);
+    overflow:hidden;
+    color:white;
+}
+
+/* INTRO */
+.intro{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+.logo-main{
+    width:130px;
+    filter:blur(25px);
+    opacity:0;
+    animation:reveal 2s forwards;
+}
+
+@keyframes reveal{
+    to{filter:blur(0);opacity:1;transform:scale(1);}
+}
+
+/* TOP LOGO */
+.logo-top{
+    position:absolute;
+    top:25px;
+    left:40px;
+    width:80px;
+    opacity:0;
+    transition:1s;
+}
+
+/* CARD */
+.card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0.9);
+    width:400px;
+    padding:55px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow:0 0 90px rgba(128,0,255,0.35);
+    text-align:center;
+    opacity:0;
+    transition:1s;
+}
+
+/* TYPE TEXT */
+.type{
+    height:22px;
+    opacity:0.7;
+    margin-bottom:15px;
+}
+
+/* INPUT */
+.input-group{margin:16px 0;text-align:left;}
+.input-group input{
+    width:100%;
+    padding:13px;
+    border-radius:12px;
+    border:none;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    outline:none;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(45deg,#7a00ff,#b366ff);
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+button:hover{box-shadow:0 0 25px #7a00ff;}
+
+a{color:#c299ff;text-decoration:none;}
+
+/* FLOAT */
+.float{
+    position:absolute;
+    opacity:0.15;
+    animation:float linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+/* CURSOR */
+.cursor{
+    position:fixed;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    pointer-events:none;
+    background:radial-gradient(circle,rgba(128,0,255,0.45),transparent);
+    transform:translate(-50%,-50%);
+    z-index:999;
+}
+
+/* TRAIL */
+.trail{
+    position:fixed;
+    width:10px;
+    height:10px;
+    background:#a64dff;
+    border-radius:50%;
+    pointer-events:none;
+    opacity:0.5;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="intro">
+    <img src="../assets/logo.png" class="logo-main" alt="App Logo">
+</div>
+
+<!-- TOP LOGO -->
+<img src="../assets/logo.png" class="logo-main" alt="App Logo">
+
+<!-- CARD -->
+<div class="card" id="card">
+    <h2>Hi my friend 👋</h2>
+    <div class="type" id="type"></div>
+
+    <div class="input-group">
+        <input placeholder="Enter Name">
+    </div>
+
+    <div class="input-group">
+        <input placeholder="Enter Email">
+    </div>
+
+    <div class="input-group">
+        <input type="password" placeholder="Create Password">
+    </div>
+
+    <button id="btn">Create Account</button>
+
+    <p style="margin-top:15px;">
+        Already have an account?
+        <a href="login-page.html">Login</a>
+    </p>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor"></div>
+
+<script>
+
+/* INTRO FLOW */
+setTimeout(()=>{
+    document.querySelector(".intro").style.display="none";
+    document.querySelector(".logo-top").style.opacity="1";
+
+    let card=document.getElementById("card");
+    card.style.opacity="1";
+    card.style.transform="translate(-50%,-50%) scale(1)";
+
+    floating();
+    typing();
+},2000);
+
+/* FLOATING ELEMENTS */
+function floating(){
+    const arr=["H₂O","O₂","+","÷","×","A","অ","𝑥"];
+    for(let i=0;i<30;i++){
+        let e=document.createElement("div");
+        e.className="float";
+        e.innerText=arr[Math.floor(Math.random()*arr.length)];
+
+        e.style.left=Math.random()*100+"vw";
+        e.style.fontSize=(14+Math.random()*30)+"px";
+        e.style.animationDuration=(6+Math.random()*10)+"s";
+
+        document.body.appendChild(e);
+    }
+}
+
+/* TYPING TEXT */
+function typing(){
+    let text="We will be very happy to teach you.";
+    let i=0;
+    let el=document.getElementById("type");
+
+    let interval=setInterval(()=>{
+        el.innerHTML+=text[i];
+        i++;
+        if(i>=text.length) clearInterval(interval);
+    },90);
+}
+
+/* CURSOR GLOW + TRAIL */
+const cursor=document.querySelector(".cursor");
+
+document.addEventListener("mousemove",e=>{
+    cursor.style.left=e.clientX+"px";
+    cursor.style.top=e.clientY+"px";
+
+    let t=document.createElement("div");
+    t.className="trail";
+    t.style.left=e.clientX+"px";
+    t.style.top=e.clientY+"px";
+    document.body.appendChild(t);
+
+    setTimeout(()=>t.remove(),400);
+});
+
+/* MAGNETIC BUTTON */
+const btn=document.getElementById("btn");
+
+btn.addEventListener("mousemove",(e)=>{
+    let rect=btn.getBoundingClientRect();
+    let x=e.clientX-rect.left-rect.width/2;
+    let y=e.clientY-rect.top-rect.height/2;
+
+    btn.style.transform=`translate(${x*0.2}px,${y*0.2}px)`;
+});
+
+btn.addEventListener("mouseleave",()=>{
+    btn.style.transform="translate(0,0)";
+});
+
+</script>
+
+</body>
+</html>
